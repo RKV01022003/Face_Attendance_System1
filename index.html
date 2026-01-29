@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Attendance System</h1>
+    <button onclick="register()">Register</button>
+    <button onclick="markAttendance()">Attendance</button>
+    <div id="status"></div>
+
+    <script>
+        // Replace with your local backend URL and port
+        const BASE_URL = "http://localhost:5000";  
+
+        async function register() {
+            const statusDiv = document.getElementById("status");
+            try {
+                const response = await fetch(`${BASE_URL}/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: "John Doe" }) // Replace with dynamic data if needed
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+                statusDiv.textContent = "Register success: " + JSON.stringify(data);
+                statusDiv.style.color = "green";
+            } catch (err) {
+                console.error(err);
+                statusDiv.textContent = "Register failed: " + err.message;
+                statusDiv.style.color = "red";
+            }
+        }
+
+        async function markAttendance() {
+            const statusDiv = document.getElementById("status");
+            try {
+                const response = await fetch(`${BASE_URL}/attendance`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: "John Doe" }) // Replace with dynamic data if needed
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+                statusDiv.textContent = "Attendance marked: " + JSON.stringify(data);
+                statusDiv.style.color = "green";
+            } catch (err) {
+                console.error(err);
+                statusDiv.textContent = "Attendance failed: " + err.message;
+                statusDiv.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
